@@ -14,10 +14,12 @@ public class ControllerEntry {
         return "login_form";
     }
 
-    @PostMapping("/login/submit")
+    /*@PostMapping("/login/submit")
     public String getLoginData(@ModelAttribute() DtoUser dtoUser) {
+        System.out.println(dtoUser);
 
-    }
+
+    }*/
 
     @GetMapping("/join")
     public String sendJoinPage(Model model) {
@@ -26,8 +28,10 @@ public class ControllerEntry {
         return "join_form";
     }
 
-    @PostMapping("/join/submit")
+    /*@PostMapping("/join/submit")
     public String getJoinData(@ModelAttribute() DtoUser dtoUser) {
+        System.out.println(dtoUser);
 
-    }
+
+    }*/
 }
