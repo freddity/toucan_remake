@@ -10,10 +10,11 @@ public class ControllerDashboard {
     public String getLandingPage() {
 
 
-        if () {
+        /*if () {
             return "landing_page";
         } else if () {
             return "dashboard";
-        }
+        }*/
+        return "landing_page";
     }
 }
