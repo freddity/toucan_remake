@@ -1,10 +1,11 @@
 package com.example.toucan_remake.entry;
 
 import com.example.toucan_remake.dto.DtoUser;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 public class ControllerEntry {
 
     @GetMapping("/login")
@@ -14,12 +15,11 @@ public class ControllerEntry {
         return "login_form";
     }
 
-    /*@PostMapping("/login/submit")
+    @PostMapping("/login")
     public String getLoginData(@ModelAttribute() DtoUser dtoUser) {
-        System.out.println(dtoUser);
-
-
-    }*/
+        System.out.println(dtoUser.toString());
+        return "redirect:/";
+    }
 
     @GetMapping("/join")
     public String sendJoinPage(Model model) {
@@ -28,10 +28,9 @@ public class ControllerEntry {
         return "join_form";
     }
 
-    /*@PostMapping("/join/submit")
+    @PostMapping("/join")
     public String getJoinData(@ModelAttribute() DtoUser dtoUser) {
-        System.out.println(dtoUser);
-
-
-    }*/
+        System.out.println(dtoUser.toString());
+        return "redirect:/";
+    }
 }

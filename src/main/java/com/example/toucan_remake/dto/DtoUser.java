@@ -29,4 +29,13 @@ public class DtoUser {
     public void setRePassword(String rePassword) {
         this.rePassword = rePassword;
     }
+
+    @Override
+    public String toString() {
+        return "DtoUser{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", rePassword='" + rePassword + '\'' +
+                '}';
+    }
 }
