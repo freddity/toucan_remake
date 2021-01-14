@@ -84,9 +84,9 @@ public class UtilJWT {
      * @param entityUser jwt owner
      * @return true when username from token is equal to username from {@link EntityUser} and token isn't expired
      */
-    public Boolean validateToken(String jwt, EntityUser entityUser) {
+    public Boolean isJWTValid(String jwt, EntityUser entityUser) {
         final String username = extractUsername(jwt);
-        return (username.equals(entityUser.getEmail())) && !isTokenExpired(jwt);
+        return (username.equals(entityUser.getEmail())) && !isJWTExpired(jwt);
     }
 
     /**
@@ -94,7 +94,7 @@ public class UtilJWT {
      * @param jwt token
      * @return true when token isn't expired yet
      */
-    private Boolean isTokenExpired(String jwt) {
+    private Boolean isJWTExpired(String jwt) {
         return extractExpiration(jwt).before(new Date());
     }
 
