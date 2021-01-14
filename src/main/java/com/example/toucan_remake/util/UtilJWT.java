@@ -12,55 +12,51 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * Utility class which help to manage JWT in application.
- * This is the only place which use <b>io.jsonwebtoken.*</b> directly.
+ * JWT Service
+ * @author Jakub Iwanicki
  */
 @Service
 public class UtilJWT {
 
-    /**
-     * Secret key for decode jwt.
-     */
-    private final String SECRET_KEY = "4sm$0dJHEJDX!EIedl4PfPvr6pRa5gj4Gdl)ySmX%T1f$yJdiMipe0x0txa%X(H^8B585NcKB6ZUX7F0l99bV&Yvf$0puL&874Fm";
+    private final String KEY =
+            "4sm$0dJHEJDX!EIedl4PfPvr6pRa5gj4Gdl)ySmX%T1f$yJdiMipe0x0txa%X(H^8B585NcKB6ZUX7F0l99bV&Yvf$0puL&874Fm";
+
     private final int EXPIRATION_TIME = 1000 * 60 * 60 * 10;
 
     /**
-     * This method extracts username from received JWT.
-     * @param token received JWT
-     * @return @see claim specified in second argument of {@link #extractClaim(String, Function)}
+     * Extracts username from received JWT.
+     * @param jwt token
+     * @return username from token
      */
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+    public String extractUsername(String jwt) {
+        return extractClaim(jwt, Claims::getSubject);
     }
 
     /**
-     * This method extracts claims from JWT using passed by {@code claimsResolver} method from {@link Claims}
-     * @param token received JWT
-     * @param claimsResolver parameter, which take value of returned by passed through {@code claimsResolver} method from {@link Claims} class
-     * @param <T> used method from {@link Claims}
-     * @return work effect of method passed in {@code claimsResolver}
+     * Extracts claims from JWT.
+     * @param jwt token
+     * @param claimsResolver allow to specify which claim is required
+     * @return required claim
      */
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
+    private <T> T extractClaim(String jwt, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(jwt);
         return claimsResolver.apply(claims);
     }
 
     /**
-     * This is the lower method in the class. This method decode JWT and returns decoded claims as {@link String}
-     * @param token received JWT
+     * Decodes JWT. Auxiliary method for {@link UtilJWT#extractClaim(String, Function)}
+     * @param jwt token
      * @return decoded claims
      */
-    private Claims extractAllClaims(String token) {
-        System.out.println(token);
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+    private Claims extractAllClaims(String jwt) {
+        return Jwts.parser().setSigningKey(KEY).parseClaimsJws(jwt).getBody();
     }
 
     /**
-     * This method provides token using {@link #createToken(Map, String)} and add claims to {@link Map}.
-     * @param entityUser user, for which token will be generated
-     * @return JWT in {@link String}
+     * Generates JWT.
+     * @param entityUser the user for whom will be created token
+     * @return JWT
      */
-    //todo use UUID instead of email for identify user in database
     public String generateToken(EntityUser entityUser) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("uuid", entityUser.getUuid());
@@ -68,10 +64,10 @@ public class UtilJWT {
     }
 
     /**
-     * This method generates token using taken claims map nad principal username.
-     * @param claims required by {@link io.jsonwebtoken.JwtBuilder#setClaims(Map)}
-     * @param subject {@code subject} is username of user, for which is the token created
-     * @return JWT created as {@link String}
+     * Generates JWT. Auxiliary method for {@link UtilJWT#generateToken(EntityUser)}
+     * @param claims needed Map with claims
+     * @param subject username for which the JWT will be created
+     * @return final JWT
      */
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
@@ -79,35 +75,35 @@ public class UtilJWT {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+                .signWith(SignatureAlgorithm.HS256, KEY).compact();
     }
 
     /**
-     * This method compares username from token and username from passed {@link } instance.
-     * @param token received JWT
-     * @param entityUser {@link EntityUser} with data about our user
-     * @return {@code true} when username from token is equal to username from {@link EntityUser}
+     * Checks JWT correctness.
+     * @param jwt token
+     * @param entityUser jwt owner
+     * @return true when username from token is equal to username from {@link EntityUser} and token isn't expired
      */
-    public Boolean validateToken(String token, EntityUser entityUser) {
-        final String username = extractUsername(token);
-        return (username.equals(entityUser.getEmail())) && !isTokenExpired(token);
+    public Boolean validateToken(String jwt, EntityUser entityUser) {
+        final String username = extractUsername(jwt);
+        return (username.equals(entityUser.getEmail())) && !isTokenExpired(jwt);
     }
 
     /**
-     * This method takes expiration date from token and compares with actually date.
-     * @param token received JWT
-     * @return {@code true} when token is not expired yet
+     * Checks JWT expirity.
+     * @param jwt token
+     * @return true when token isn't expired yet
      */
-    private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+    private Boolean isTokenExpired(String jwt) {
+        return extractExpiration(jwt).before(new Date());
     }
 
     /**
-     * This method extracts expiration date from passed token.
-     * @param token received JWT
+     * Extracts expiration date from JWT.
+     * @param jwt token
      * @return expiration {@link Date}
      */
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+    private Date extractExpiration(String jwt) {
+        return extractClaim(jwt, Claims::getExpiration);
     }
 }
