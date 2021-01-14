@@ -15,7 +15,7 @@ public class UtilJWTTest {
         String jwt = jwtUtil.generateToken(entityUser);
 
         //when
-        String result = jwtUtil.extractUsername(jwt);
+        String result = jwtUtil.extractEmail(jwt);
 
         //then
         Assertions.assertEquals("emailTest", result);
