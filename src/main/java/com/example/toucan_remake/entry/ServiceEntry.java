@@ -42,7 +42,6 @@ public class ServiceEntry {
         return "landing_page";
     }
 
-    //todo -----------
     protected String loginUserAndReturnToken(String email, String password) {
 
         EntityUser user = repositoryUser.findByEmail(email);
@@ -58,7 +57,7 @@ public class ServiceEntry {
         return null;
     }
 
-    public String registersUserAndReturnToken(String email, String password) {
+    protected String registersUserAndReturnToken(String email, String password) {
 
         if (!repositoryUser.existsByEmail(email)) {
             repositoryUser.save(new EntityUser(email, password));
