@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
@@ -26,7 +27,7 @@ public class ControllerEntry {
      * @return landing_page when user isn't trusted or dashboard when is trusted
      */
     @GetMapping
-    public String getLandingPage(@RequestHeader(value = "jwt", required = false) String jwt) {
+    public String getLandingPage(@CookieValue(value = "jwt", required = false) String jwt) {
         return serviceEntry.chooseLandingPage(jwt);
     }
 
@@ -53,7 +54,8 @@ public class ControllerEntry {
                 dtoUser.getEmail(), dtoUser.getPassword());
 
         if (Objects.nonNull(token)) {
-            response.addHeader("jwt", token);
+            Cookie cookie = new Cookie("jwt", token);
+            response.addCookie(cookie);
         }
     }
 
@@ -76,7 +78,8 @@ public class ControllerEntry {
                 dtoUser.getEmail(), dtoUser.getPassword());
 
         if (Objects.nonNull(token)) {
-            response.addHeader("jwt", token);
+            Cookie cookie = new Cookie("jwt", token);
+            response.addCookie(cookie);
         }
     }
 }
