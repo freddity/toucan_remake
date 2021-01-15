@@ -1,8 +1,11 @@
 package com.example.toucan_remake.entry;
 
+import com.example.toucan_remake.user.EntityUser;
 import com.example.toucan_remake.user.RepositoryUser;
 import com.example.toucan_remake.util.UtilJWT;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
 
@@ -23,7 +26,7 @@ public class ServiceEntry {
      * !!! Here I only check which of two pages will be returned. Password and correctness of all credentials
      * will be checking in filter. !!!
      * @param jwt token
-     * @return landing_page when user isn't trusted or dashboard in opposed case
+     * @return landing_page when user isn't trusted or dashboard when is trusted
      */
     protected String chooseLandingPage(String jwt) {
         if (Objects.isNull(jwt) || !repositoryUser.existsByEmail(utilJWT.extractEmail(jwt))) {
@@ -39,5 +42,37 @@ public class ServiceEntry {
         return "landing_page";
     }
 
+    //todo -----------
+    protected String loginUserAndReturnToken(String email, String password) {
+
+        EntityUser user = repositoryUser.findByEmail(email);
+
+        if (Objects.isNull(user)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User doesn't exist.");
+        }
+
+        if (user.getPassword().equals(password)) {
+            return utilJWT.generateToken(user);
+        }
+
+        return null;
+    }
+
+    public String registersUserAndReturnToken(String email, String password) {
+
+        if (!repositoryUser.existsByEmail(email)) {
+            repositoryUser.save(new EntityUser(email, password));
+        } else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email is already used.");
+        }
+
+        EntityUser user = repositoryUser.findByEmail(email);
+
+        if (user.getPassword().equals(password)) {
+            return utilJWT.generateToken(user);
+        }
+
+        return null;
+    }
 }
 

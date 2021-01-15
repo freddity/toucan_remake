@@ -22,8 +22,8 @@ public interface RepositoryUser extends JpaRepository<EntityUser, UUID> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE EntityUser u SET u.password = :password WHERE u.username = :username")
-    void changePassword(@Param("username") String username,
+    @Query("UPDATE EntityUser u SET u.password = :password WHERE u.email = :email")
+    void changePassword(@Param("email") String username,
                         @Param("password") String newHashedPassword);
 
     boolean existsByEmail(String email);
