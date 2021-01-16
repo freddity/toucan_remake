@@ -37,26 +37,19 @@ public class ControllerEntry {
      * @return login_form with form
      */
     @GetMapping("/login")
-    public String sendLoginPage(Model model) {
+    public String sendLoginPage(@CookieValue(value = "jwt", required = false) String jwt, Model model) {
+
+        if (Objects.isNull(jwt)) {
+            model.addAttribute("user", new DtoUser());
+            return "login_form";
+        }
+
+        if (serviceEntry.isTokenCorrect(jwt)) {
+            return "redirect:/";
+        }
+
         model.addAttribute("user", new DtoUser());
         return "login_form";
-    }
-
-    /**
-     * Returns JWT when given credentials are correct.
-     * @param dtoUser submitted credentials
-     * @param response response object used to add header
-     */
-    @PostMapping("/login")
-    public void getLoginData(@ModelAttribute() DtoUser dtoUser, HttpServletResponse response) {
-
-        String token = serviceEntry.loginUserAndReturnToken(
-                dtoUser.getEmail(), dtoUser.getPassword());
-
-        if (Objects.nonNull(token)) {
-            Cookie cookie = new Cookie("jwt", token);
-            response.addCookie(cookie);
-        }
     }
 
     /**
@@ -65,14 +58,49 @@ public class ControllerEntry {
      * @return join_form with form
      */
     @GetMapping("/join")
-    public String sendJoinPage(Model model) {
+    public String sendJoinPage(@CookieValue(value = "jwt", required = false) String jwt, Model model) {
+
+        if (Objects.isNull(jwt)) {
+            model.addAttribute("user", new DtoUser());
+            return "join_form";
+        }
+
+        if (serviceEntry.isTokenCorrect(jwt)) {
+            return "redirect:/";
+        }
+
         model.addAttribute("user", new DtoUser());
         return "join_form";
     }
 
+    /**
+     * Returns JWT when given credentials are correct.
+     * @param dtoUser submitted credentials
+     * @param response response object used to add header
+     * @return dashboard when credentials are correct or landing_page when aren't
+     */
+    @PostMapping("/login")
+    public String getLoginData(@ModelAttribute() DtoUser dtoUser, HttpServletResponse response) {
 
+        String token = serviceEntry.loginUserAndReturnToken(
+                dtoUser.getEmail(), dtoUser.getPassword());
+
+        if (Objects.nonNull(token)) {
+            Cookie cookie = new Cookie("jwt", token);
+            response.addCookie(cookie);
+        }
+
+        return null; //always before an error will be thrown in loginUserAndReturnToken()
+    }
+
+    /**
+     *
+     * @param dtoUser
+     * @param response
+     * @return
+     */
     @PostMapping("/join")
-    public void getJoinData(@ModelAttribute() DtoUser dtoUser, HttpServletResponse response) {
+    public String getJoinData(@ModelAttribute() DtoUser dtoUser, HttpServletResponse response) {
 
         String token = serviceEntry.registersUserAndReturnToken(
                 dtoUser.getEmail(), dtoUser.getPassword());
@@ -81,5 +109,7 @@ public class ControllerEntry {
             Cookie cookie = new Cookie("jwt", token);
             response.addCookie(cookie);
         }
+
+        return null; //always before an error will be thrown in registersUserAndReturnToken()
     }
 }

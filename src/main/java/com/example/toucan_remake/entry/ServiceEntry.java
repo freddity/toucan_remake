@@ -3,6 +3,7 @@ package com.example.toucan_remake.entry;
 import com.example.toucan_remake.user.EntityUser;
 import com.example.toucan_remake.user.RepositoryUser;
 import com.example.toucan_remake.util.UtilJWT;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,14 +30,19 @@ public class ServiceEntry {
      * @return landing_page when user isn't trusted or dashboard when is trusted
      */
     protected String chooseLandingPage(String jwt) {
-        if (Objects.isNull(jwt) || !repositoryUser.existsByEmail(utilJWT.extractEmail(jwt))) {
-            return "landing_page";
-        }
 
-        if (!utilJWT.isJWTValid(jwt, repositoryUser.findByEmail(utilJWT.extractEmail(jwt)))) {
+        try {
+            if (Objects.isNull(jwt) || !repositoryUser.existsByEmail(utilJWT.extractEmail(jwt))) {
+                return "landing_page";
+            }
+
+            if (!utilJWT.isJWTValid(jwt, repositoryUser.findByEmail(utilJWT.extractEmail(jwt)))) {
+                return "landing_page";
+            } else if (utilJWT.isJWTValid(jwt, repositoryUser.findByEmail(utilJWT.extractEmail(jwt)))) {
+                return "dashboard";
+            }
+        } catch (ExpiredJwtException e) {
             return "landing_page";
-        } else if (utilJWT.isJWTValid(jwt, repositoryUser.findByEmail(utilJWT.extractEmail(jwt)))) {
-            return "dashboard";
         }
 
         return "landing_page";
@@ -72,6 +78,15 @@ public class ServiceEntry {
         }
 
         return null;
+    }
+
+    protected boolean isTokenCorrect(String jwt) {
+
+        try {
+            return utilJWT.isJWTValid(jwt, repositoryUser.findByEmail(utilJWT.extractEmail(jwt)));
+        } catch (NullPointerException e) {
+            return false;
+        }
     }
 }
 
