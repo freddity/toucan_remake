@@ -88,6 +88,7 @@ public class ControllerEntry {
         if (Objects.nonNull(token)) {
             Cookie cookie = new Cookie("jwt", token);
             response.addCookie(cookie);
+            return "redirect:/";
         }
 
         return null; //always before an error will be thrown in loginUserAndReturnToken()
@@ -108,6 +109,7 @@ public class ControllerEntry {
         if (Objects.nonNull(token)) {
             Cookie cookie = new Cookie("jwt", token);
             response.addCookie(cookie);
+            return "redirect:/";
         }
 
         return null; //always before an error will be thrown in registersUserAndReturnToken()

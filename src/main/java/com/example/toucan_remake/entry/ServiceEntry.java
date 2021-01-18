@@ -58,6 +58,8 @@ public class ServiceEntry {
 
         if (user.getPassword().equals(password)) {
             return utilJWT.generateToken(user);
+        } else if (!user.getPassword().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password.");
         }
 
         return null;
