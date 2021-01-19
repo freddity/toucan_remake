@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 /**
+ * Controller services signin/signup requests.
  * @author Jakub Iwanicki
  */
 @Controller

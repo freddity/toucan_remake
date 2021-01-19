@@ -10,6 +10,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
 
+/**
+ * Service layer used in {@link ControllerEntry}
+ * @author Jakub Iwanicki
+ */
 @Service
 public class ServiceEntry {
 
@@ -48,6 +52,13 @@ public class ServiceEntry {
         return "landing_page";
     }
 
+    /**
+     * Generates JWT when credentials are correct or throws http error statuses when they aren't.
+     * Null will be never returned.
+     * @param email email
+     * @param password password
+     * @return JWT
+     */
     protected String loginUserAndReturnToken(String email, String password) {
 
         EntityUser user = repositoryUser.findByEmail(email);
@@ -65,6 +76,14 @@ public class ServiceEntry {
         return null;
     }
 
+    /**
+     * Creates user if all conditions met and returns JWT or throws http error statuses when they aren't.
+     * Checks if the email isn't already taken.
+     * Null will be never returned.
+     * @param email email
+     * @param password password
+     * @return JWT
+     */
     protected String registersUserAndReturnToken(String email, String password) {
 
         if (!repositoryUser.existsByEmail(email)) {
@@ -82,6 +101,11 @@ public class ServiceEntry {
         return null;
     }
 
+    /**
+     * Provides JWT checking using {@link UtilJWT#isJWTValid(String, EntityUser)}.
+     * @param jwt token
+     * @return true when correct or false when isn't
+     */
     protected boolean isTokenCorrect(String jwt) {
 
         try {
