@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * JWT utilities.
+ * JWT utilities
  * @author Jakub Iwanicki
  */
 @Service
