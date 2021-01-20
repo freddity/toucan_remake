@@ -5,9 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,8 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Jakub Iwanicki
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = ControllerEntry.class)
+//@WebMvcTest(controllers = ControllerEntry.class)
 @AutoConfigureMockMvc
+@SpringBootTest
 public class ControllerEntryTest {
 
     @Autowired private MockMvc mockMvc;
@@ -43,11 +45,11 @@ public class ControllerEntryTest {
     @Test
     public void getLandingPage_JWTOK_returnsDashboard() throws Exception {
 
-        File dashboard = new ClassPathResource("templates/dashboard.html").getFile();
+        File dashboard = new ClassPathResource("templates/landing_page.html").getFile();
         String html = new String(Files.readAllBytes(dashboard.toPath()));
 
         mockMvc.
-                perform(get(""))
+                perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(html))
                 .andDo(print());
