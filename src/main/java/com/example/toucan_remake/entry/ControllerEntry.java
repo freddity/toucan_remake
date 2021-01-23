@@ -46,7 +46,7 @@ public class ControllerEntry {
         }
 
         if (serviceEntry.isTokenCorrect(jwt)) {
-            return "redirect:/";
+            return "dashboard"; //or "redirect:/" but "dashboard" allow to test easier
         }
 
         model.addAttribute("user", new DtoUser());
@@ -59,26 +59,30 @@ public class ControllerEntry {
      * @return join_form with form
      */
     @GetMapping("/join")
-    public String sendJoinPage(@CookieValue(value = "jwt", required = false) String jwt, Model model) {
+    public String sendJoinPage(@CookieValue(value = "jwt", required = false) String jwt, Model model,
+                               HttpServletResponse response) {
 
         if (Objects.isNull(jwt)) {
             model.addAttribute("user", new DtoUser());
+            response.setStatus(200);
             return "join_form";
         }
 
         if (serviceEntry.isTokenCorrect(jwt)) {
-            return "redirect:/";
+            response.setStatus(200);
+            return "dashboard"; //or "redirect:/" but "dashboard" allow to test easier
         }
 
         model.addAttribute("user", new DtoUser());
+        response.setStatus(200);
         return "join_form";
     }
 
     /**
      * Returns JWT when given credentials are correct.
      * @param dtoUser submitted credentials
-     * @param response response object used to add header
-     * @return dashboard when credentials are correct or landing_page when aren't
+     * @param response response object used to add a cookie
+     * @return calls "/" endpoint
      */
     @PostMapping("/login")
     public String getLoginData(@ModelAttribute() DtoUser dtoUser, HttpServletResponse response) {
@@ -89,17 +93,17 @@ public class ControllerEntry {
         if (Objects.nonNull(token)) {
             Cookie cookie = new Cookie("jwt", token);
             response.addCookie(cookie);
-            return "redirect:/";
+            return "dashboard"; //or "redirect:/" but "dashboard" allow to test easier
         }
 
         return null; //always before an error will be thrown in loginUserAndReturnToken()
     }
 
     /**
-     *
-     * @param dtoUser
-     * @param response
-     * @return
+     * Creates user and returns JWT.
+     * @param dtoUser submitted credentials
+     * @param response response object used to add a cookie
+     * @return calls "/" endpoint
      */
     @PostMapping("/join")
     public String getJoinData(@ModelAttribute() DtoUser dtoUser, HttpServletResponse response) {
@@ -110,7 +114,7 @@ public class ControllerEntry {
         if (Objects.nonNull(token)) {
             Cookie cookie = new Cookie("jwt", token);
             response.addCookie(cookie);
-            return "redirect:/";
+            return "dashboard"; //or "redirect:/" but "dashboard" allow to test easier
         }
 
         return null; //always before an error will be thrown in registersUserAndReturnToken()
