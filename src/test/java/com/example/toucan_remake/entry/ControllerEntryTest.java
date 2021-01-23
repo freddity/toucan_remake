@@ -1,5 +1,8 @@
 package com.example.toucan_remake.entry;
 
+import com.example.toucan_remake.user.EntityUser;
+import com.example.toucan_remake.user.RepositoryUser;
+import com.example.toucan_remake.util.UtilJWT;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
@@ -12,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.servlet.http.Cookie;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.Arrays;
@@ -33,6 +37,8 @@ public class ControllerEntryTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ApplicationContext applicationContext;
+    @Autowired private RepositoryUser repositoryUser;
+    @Autowired private UtilJWT utilJWT;
 
     @BeforeEach
     void printApplicationContext() {
@@ -43,7 +49,7 @@ public class ControllerEntryTest {
     }
 
     @Test
-    public void getLandingPage_JWTOK_returnsDashboard() throws Exception {
+    public void getLandingPage_JWTNotOK_returnsLandingPage() throws Exception {
 
         File dashboard = new ClassPathResource("templates/landing_page.html").getFile();
         String html = new String(Files.readAllBytes(dashboard.toPath()));
@@ -56,8 +62,24 @@ public class ControllerEntryTest {
     }
 
     @Test
-    public void getLandingPage_JWTNotOK_returnsLandingPage() {
+    public void getLandingPage_JWTOK_returnsDashboard() throws Exception {
 
+        File dashboard = new ClassPathResource("templates/dashboard.html").getFile();
+        String html = new String(Files.readAllBytes(dashboard.toPath()));
+
+        repositoryUser.save(new EntityUser("email", "password"));
+
+        mockMvc.
+                perform(get("/")
+                        .cookie(new Cookie(
+                                "jwt",
+                                utilJWT.generateToken(repositoryUser.findByEmail("email"))
+                                )
+                        )
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().string(html))
+                .andDo(print());
     }
 
 }

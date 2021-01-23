@@ -57,7 +57,7 @@ public class UtilJWT {
      * @param entityUser the user for whom will be created token
      * @return JWT
      */
-    public String generateToken(EntityUser entityUser) {
+    public String generateToken(EntityUser entityUser) throws NullPointerException {
         Map<String, Object> claims = new HashMap<>();
         claims.put("uuid", entityUser.getUuid());
         return createToken(claims, entityUser.getEmail());
