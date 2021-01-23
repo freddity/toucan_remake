@@ -3,7 +3,9 @@ package com.example.toucan_remake.entry;
 import com.example.toucan_remake.user.EntityUser;
 import com.example.toucan_remake.user.RepositoryUser;
 import com.example.toucan_remake.util.UtilJWT;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +13,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.servlet.http.Cookie;
@@ -29,8 +32,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Test class for {@link ControllerEntry}.
  * @author Jakub Iwanicki
  */
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @RunWith(SpringRunner.class)
-//@WebMvcTest(controllers = ControllerEntry.class)
+//@WebMvcTest(controllers = ControllerEntry.class) /*@WebMvcTest tests only controller (e.g. repositories beans aren't create) and @SpringBootTest allows to create integration tests*/
 @AutoConfigureMockMvc
 @SpringBootTest
 public class ControllerEntryTest {
@@ -64,16 +68,84 @@ public class ControllerEntryTest {
     @Test
     public void getLandingPage_JWTOK_returnsDashboard() throws Exception {
 
+        repositoryUser.save(new EntityUser("email", "password"));
+
         File dashboard = new ClassPathResource("templates/dashboard.html").getFile();
         String html = new String(Files.readAllBytes(dashboard.toPath()));
-
-        repositoryUser.save(new EntityUser("email", "password"));
 
         mockMvc.
                 perform(get("/")
                         .cookie(new Cookie(
-                                "jwt",
-                                utilJWT.generateToken(repositoryUser.findByEmail("email"))
+                                    "jwt",
+                                    utilJWT.generateToken(repositoryUser.findByEmail("email"))
+                                )
+                        )
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().string(html))
+                .andDo(print());
+    }
+
+    @Test
+    public void sendLoginPage_JWTNotOK_returnsLoginForm() throws Exception{
+
+        File dashboard = new ClassPathResource("templates/login_form.html").getFile();
+        String html = new String(Files.readAllBytes(dashboard.toPath()));
+
+        mockMvc.
+                perform(get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(html))
+                .andDo(print());
+    }
+
+    @Test
+    public void sendLoginPage_JWTOK_returnsDashboard() throws Exception {
+
+        repositoryUser.save(new EntityUser("email", "password"));
+
+        File dashboard = new ClassPathResource("templates/dashboard.html").getFile();
+        String html = new String(Files.readAllBytes(dashboard.toPath()));
+
+        mockMvc.
+                perform(get("/login")
+                        .cookie(new Cookie(
+                                        "jwt",
+                                        utilJWT.generateToken(repositoryUser.findByEmail("email"))
+                                )
+                        )
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().string(html))
+                .andDo(print());
+    }
+
+    @Test
+    public void sendJoinPage_JWTNotOK_returnsJoinForm() throws Exception {
+
+        File dashboard = new ClassPathResource("templates/join_form.html").getFile();
+        String html = new String(Files.readAllBytes(dashboard.toPath()));
+
+        mockMvc.
+                perform(get("/join"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(html))
+                .andDo(print());
+    }
+
+    @Test
+    public void sendJoinPage_JWTOK_returnsDashboard() throws Exception {
+
+        repositoryUser.save(new EntityUser("email", "password"));
+
+        File dashboard = new ClassPathResource("templates/dashboard.html").getFile();
+        String html = new String(Files.readAllBytes(dashboard.toPath()));
+
+        mockMvc.
+                perform(get("/join")
+                        .cookie(new Cookie(
+                                        "jwt",
+                                        utilJWT.generateToken(repositoryUser.findByEmail("email"))
                                 )
                         )
                 )
