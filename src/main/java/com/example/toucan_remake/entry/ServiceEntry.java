@@ -33,7 +33,7 @@ public class ServiceEntry {
      * @param jwt token
      * @return landing_page when user isn't trusted or dashboard when is trusted
      */
-    protected String chooseLandingPage(String jwt) {
+    public String chooseLandingPage(String jwt) {
 
         try {
             if (Objects.isNull(jwt) || !repositoryUser.existsByEmail(utilJWT.extractEmail(jwt))) {
@@ -59,7 +59,7 @@ public class ServiceEntry {
      * @param password password
      * @return JWT
      */
-    protected String loginUserAndReturnToken(String email, String password) {
+    public String loginUserAndReturnToken(String email, String password) {
 
         EntityUser user = repositoryUser.findByEmail(email);
 
@@ -84,7 +84,7 @@ public class ServiceEntry {
      * @param password password
      * @return JWT
      */
-    protected String registersUserAndReturnToken(String email, String password) {
+    public String registersUserAndReturnToken(String email, String password) {
 
         if (!repositoryUser.existsByEmail(email)) {
             repositoryUser.save(new EntityUser(email, password));
@@ -106,7 +106,7 @@ public class ServiceEntry {
      * @param jwt token
      * @return true when correct or false when isn't
      */
-    protected boolean isTokenCorrect(String jwt) {
+    public boolean isTokenCorrect(String jwt) {
 
         try {
             return utilJWT.isJWTValid(jwt, repositoryUser.findByEmail(utilJWT.extractEmail(jwt)));
