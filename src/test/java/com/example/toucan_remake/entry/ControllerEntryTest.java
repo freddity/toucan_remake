@@ -3,6 +3,9 @@ package com.example.toucan_remake.entry;
 import com.example.toucan_remake.user.EntityUser;
 import com.example.toucan_remake.user.RepositoryUser;
 import com.example.toucan_remake.util.UtilJWT;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,8 +36,7 @@ import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for {@link ControllerEntry}.
@@ -69,7 +71,7 @@ public class ControllerEntryTest {
         mockMvc.
                 perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(html))
+                .andExpect(view().name("landing_page"))
                 .andDo(print());
     }
 
@@ -90,7 +92,7 @@ public class ControllerEntryTest {
                         )
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().string(html))
+                .andExpect(view().name("dashboard"))
                 .andDo(print());
     }
 
@@ -103,7 +105,7 @@ public class ControllerEntryTest {
         mockMvc.
                 perform(get("/login"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(html))
+                .andExpect(view().name("login_form"))
                 .andDo(print());
     }
 
@@ -111,9 +113,6 @@ public class ControllerEntryTest {
     public void sendLoginPage_JWTOK_returnsDashboard() throws Exception {
 
         repositoryUser.save(new EntityUser("email", "password"));
-
-        File dashboard = new ClassPathResource("templates/dashboard.html").getFile();
-        String html = new String(Files.readAllBytes(dashboard.toPath()));
 
         mockMvc.
                 perform(get("/login")
@@ -124,20 +123,17 @@ public class ControllerEntryTest {
                         )
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().string(html))
+                .andExpect(view().name("dashboard"))
                 .andDo(print());
     }
 
     @Test
     public void sendJoinPage_JWTNotOK_returnsJoinForm() throws Exception {
 
-        File dashboard = new ClassPathResource("templates/join_form.html").getFile();
-        String html = new String(Files.readAllBytes(dashboard.toPath()));
-
         mockMvc.
                 perform(get("/join"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(html))
+                .andExpect(view().name("join_form"))
                 .andDo(print());
     }
 
@@ -145,9 +141,6 @@ public class ControllerEntryTest {
     public void sendJoinPage_JWTOK_returnsDashboard() throws Exception {
 
         repositoryUser.save(new EntityUser("email", "password"));
-
-        File dashboard = new ClassPathResource("templates/dashboard.html").getFile();
-        String html = new String(Files.readAllBytes(dashboard.toPath()));
 
         mockMvc.
                 perform(get("/join")
@@ -158,7 +151,7 @@ public class ControllerEntryTest {
                         )
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().string(html))
+                .andExpect(view().name("dashboard"))
                 .andDo(print());
     }
 
