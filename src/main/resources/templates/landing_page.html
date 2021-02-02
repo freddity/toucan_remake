@@ -1,16 +1,125 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="//fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Toucan</title>
-    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <!--<link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">-->
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+        }
+
+        nav {
+            padding: 10px 20px 10px 20px;
+        }
+
+        nav > div {
+            overflow: auto;
+        }
+
+        .logo {
+            /*position*/
+            float: left;
+            display: inline-block;
+
+            /*design*/
+            font-size: 25px;
+
+        }
+
+        .entrances-container {
+            /*position*/
+            float: right;
+            display: inline-block;
+        }
+
+        .login {
+            /*position*/
+            float: left;
+            display: inline-block;
+            margin-right: 10px;
+
+            position: relative;
+            top: 50%;
+            transform: translateY(25%);
+
+            /*design*/
+            text-decoration: none;
+            color: inherit;
+
+        }
+
+        .join {
+            /*position*/
+            float: right;
+            display: inline-block;
+            margin-left: 10px;
+
+            position: relative;
+            top: 50%;
+            transform: translateY(25%);
+
+            /*design*/
+            text-decoration: none;
+            color: inherit;
+
+        }
+
+
+
+
+
+    </style>
+
+
 </head>
 <body>
-    <h1>HELLO</h1>
-    <a href="/login">sign in</a>
-    <a href="/join">sign up</a>
+    <nav class="nav">
+        <div>
+            <ul class="ul">
+                <li class="logo">Toucan</li>
+                <li class="entrances-container">
+                    <a class="login" href="/login">Sign in</a>
+                    <a class="join" href="/join">Sign up</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
