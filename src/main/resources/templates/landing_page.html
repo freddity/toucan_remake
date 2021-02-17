@@ -10,7 +10,6 @@
     <title>Toucan</title>
     <!--<link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">-->
 
-
     <style>
         *, *::before, *::after {
             padding: 0;
@@ -25,6 +24,8 @@
         }
 
         .first-section {
+            width: 100%;
+            height: 100%;
             background-color: #DF0054;
             color: #ffffff;
             padding: 15% 0 15% 200px ;
@@ -62,9 +63,11 @@
             z-index: -1;
         }
 
-        .first-section p {
+        .first-section > div > p {
             width: 600px;
             font-size: 20px;
+            position: relative;
+            top: 20px;
         }
 
         .first-section h1 {
@@ -78,6 +81,11 @@
 
         /*Buttons*/
 
+        .first-section-buttons {
+            position: relative;
+            top: 10px;
+        }
+
         .button {
             position: relative;
             overflow: hidden;
@@ -86,7 +94,7 @@
             height: 40px;
             width: 150px;
             border: 2px solid #ffffff;
-            margin: 20px 20px 20px 0;
+            margin: 40px 20px 20px 0;
             color: #BFC0C0;
             text-transform: uppercase;
             text-decoration: none;
@@ -96,14 +104,14 @@
             justify-content: center;
         }
 
-        .button a {
+        .button p {
             color: #ffffff;
             text-decoration: none;
             letter-spacing: 1px;
         }
 
 
-        .button a {
+        .button p {
             position: relative;
             transition: all .45s ease-Out;
         }
@@ -123,11 +131,9 @@
             left: 0;
         }
 
-        .button:hover a {
+        .button:hover p {
             color: #ffffff;
         }
-
-
     </style>
 
 
@@ -138,20 +144,20 @@
             <h1>Toucan</h1>
             <p>Quickly and simply notepad will help you to remember all things you need. Currently, the application is available for web browser but in the future will be for mobile available too. Let's check it out!</p>
             <div class="first-section-buttons">
-                <div class="button" id="button-login">
+                <a class="button" id="button-login" href="/login">
                     <div class="translate"></div>
-                    <a href="#">Sign In</a>
-                </div>
-                <div class="button" id="button-signup">
+                    <p>Log In</p>
+                </a>
+                <a class="button" id="button-signup" href="/join">
                     <div class="translate"></div>
-                    <a href="#">Sign Up</a>
-                </div>
+                    <p>Sign Up</p>
+                </a>
             </div>
         </div>
     </div>
-    <div class="second-section">
-        
-    </div>
+    <!--<div class="second-section">
+
+    </div>-->
 </body>
 </html>
 
