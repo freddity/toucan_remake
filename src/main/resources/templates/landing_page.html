@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="//fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Ultra&family=Work+Sans:wght@500&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -12,72 +12,120 @@
 
 
     <style>
-        * {
-            box-sizing: border-box;
-            list-style-type: none;
+        *, *::before, *::after {
             padding: 0;
             margin: 0;
-            font-family: 'Lato', sans-serif;
+            box-sizing: border-box;
+            font-family: 'Work Sans', sans-serif;
         }
 
-        nav {
-            padding: 10px 20px 10px 20px;
+        body {
+            width: 100vw;
+            height: 100vh;
         }
 
-        nav > div {
-            overflow: auto;
+        .first-section {
+            background-color: #DF0054;
+            color: #ffffff;
+            padding: 15% 0 15% 200px ;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
         }
 
-        .logo {
-            /*position*/
-            float: left;
-            display: inline-block;
-
-            /*design*/
-            font-size: 25px;
-
-        }
-
-        .entrances-container {
-            /*position*/
-            float: right;
-            display: inline-block;
-        }
-
-        .login {
-            /*position*/
-            float: left;
-            display: inline-block;
-            margin-right: 10px;
-
+        .first-section > div {
+            width: 45%;
             position: relative;
-            top: 50%;
-            transform: translateY(25%);
-
-            /*design*/
-            text-decoration: none;
-            color: inherit;
-
+            z-index: 1;
         }
 
-        .join {
-            /*position*/
-            float: right;
-            display: inline-block;
-            margin-left: 10px;
-
+        .first-section h1 {
             position: relative;
-            top: 50%;
-            transform: translateY(25%);
+            left: -15px;
+        }
 
-            /*design*/
+        .first-section h1, h1::after {
+            font-family: 'Ultra', serif;
+            font-weight: 400;
+        }
+
+        .first-section h1::after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 95px;
+            left: 30px;
+            width: 450px;
+            height: 20px;
+            background-color: #FFD900;
+            z-index: -1;
+        }
+
+        .first-section p {
+            width: 600px;
+            font-size: 20px;
+        }
+
+        .first-section h1 {
+            font-size: 100px;
+            margin: 0;
+        }
+
+        .first-section > div p, button {
+            margin: 20px 0 20px 0;
+        }
+
+        /*Buttons*/
+
+        .button {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            display: inline-flex;
+            height: 40px;
+            width: 150px;
+            border: 2px solid #ffffff;
+            margin: 20px 20px 20px 0;
+            color: #BFC0C0;
+            text-transform: uppercase;
             text-decoration: none;
-            color: inherit;
+            font-size: .8em;
+            letter-spacing: 1.5px;
+            align-items: center;
+            justify-content: center;
+        }
 
+        .button a {
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: 1px;
         }
 
 
+        .button a {
+            position: relative;
+            transition: all .45s ease-Out;
+        }
 
+        .translate {
+            transform: rotate(50deg);
+            width: 100%;
+            height: 250%;
+            left: -200px;
+            top: -30px;
+            background: #FFD900;
+            position: absolute;
+            transition: all .3s ease-Out;
+        }
+
+        .button:hover .translate {
+            left: 0;
+        }
+
+        .button:hover a {
+            color: #ffffff;
+        }
 
 
     </style>
@@ -85,17 +133,25 @@
 
 </head>
 <body>
-    <nav class="nav">
+    <div class="first-section">
         <div>
-            <ul class="ul">
-                <li class="logo">Toucan</li>
-                <li class="entrances-container">
-                    <a class="login" href="/login">Sign in</a>
-                    <a class="join" href="/join">Sign up</a>
-                </li>
-            </ul>
+            <h1>Toucan</h1>
+            <p>Quickly and simply notepad will help you to remember all things you need. Currently, the application is available for web browser but in the future will be for mobile available too. Let's check it out!</p>
+            <div class="first-section-buttons">
+                <div class="button" id="button-login">
+                    <div class="translate"></div>
+                    <a href="#">Sign In</a>
+                </div>
+                <div class="button" id="button-signup">
+                    <div class="translate"></div>
+                    <a href="#">Sign Up</a>
+                </div>
+            </div>
         </div>
-    </nav>
+    </div>
+    <div class="second-section">
+        
+    </div>
 </body>
 </html>
 
