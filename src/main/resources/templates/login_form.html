@@ -25,19 +25,23 @@
         }
 
         function colorEmailIcon() {
-            $('#email-icon-container').css('visibility', 'visible')
+            $('#email-icon-container').css('visibility', 'visible');
+            $('#input-email').css('color', '#fff');
         }
 
         function colorPassIcon() {
-            $('#password-icon-container').css('visibility', 'visible')
+            $('#password-icon-container').css('visibility', 'visible');
+            $('#input-password').css('color', '#fff');
         }
 
         function resetEmailIcon() {
             $('#email-icon-container').css('visibility', 'hidden');
+            $('#input-email').css('color', '#868898');
         }
 
         function resetPasswordIcon() {
             $('#password-icon-container').css('visibility', 'hidden');
+            $('#input-password').css('color', '#868898');
         }
     </script>
     <style>
@@ -68,7 +72,11 @@
             top: 145px;
             left: 40px;
             font-size: 20px;
-            color: #A1A3B0;
+            color: #A1A3B0;-webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+
         }
 
         ul {
@@ -152,11 +160,6 @@
             border-radius: 7px;
         }
 
-        #button {
-            position: relative;
-            top: 250px;
-        }
-
         .gg-user {
             position: absolute;
             top: 15px;
@@ -194,14 +197,22 @@
             color: #A1A3B0;
             font-size: 18px;
             background-color: transparent;
-            border: solid #FFD900 1.9px;
+            border: solid #A1A3B0 1.9px;
             border-radius: 50vw;
-
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
         }
 
         .submit-button:hover,
         .submit-button:active {
 
+        }
+
+        #button {
+            position: relative;
+            top: 300px;
         }
     </style>
 
