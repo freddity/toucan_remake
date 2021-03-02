@@ -25,25 +25,19 @@
         }
 
         function colorEmailIcon() {
-            $('head')
-                .append('' +
-                    '<style id="icon-white-email">.gg-user,.gg-user::after,.gg-user::before{color:#fff}</style>'
-                );
+            $('#email-icon-container').css('visibility', 'visible')
         }
 
         function colorPassIcon() {
-            $('head')
-                .append('' +
-                    '<style id="icon-white-password">.gg-lock-unlock,.gg-lock-unlock::after,.gg-lock-unlock::before{color:#fff}</style>'
-                );
+            $('#password-icon-container').css('visibility', 'visible')
         }
 
         function resetEmailIcon() {
-            $('#icon-white-email').remove();
+            $('#email-icon-container').css('visibility', 'hidden');
         }
 
         function resetPasswordIcon() {
-            $('#icon-white-password').remove();
+            $('#password-icon-container').css('visibility', 'hidden');
         }
     </script>
     <style>
@@ -166,6 +160,17 @@
             left: 38px;
         }
 
+        .icon-container {
+            visibility: hidden;
+            z-index: 2;
+        }
+
+        .focused-icon,
+        .focused-icon::after,
+        .focused-icon::before{
+            color: #fff;
+        }
+
     </style>
 
 </head>
@@ -177,14 +182,20 @@
             <li><div class="space"></div></li>
             <li>
                 <div class="input-con" id="div-email" onclick="focusEmailIn(); colorEmailIcon()">
-                    <i class="gg-user active" id="icon-email"></i>
+                    <div class="icon-container" id="email-icon-container">
+                        <i class="gg-user focused-icon" id="icon-email-focused"></i>
+                    </div>
+                    <i class="gg-user" id="icon-email-notfocused"></i>
                     <input type="text" id="input-email" th:field="*{email}" onblur="resetEmailIcon()"/>
                 </div>
             </li>
             <li><div class="space"></div></li>
             <li>
                 <div class="input-con" id="div-password" onclick="focusPassIn(); colorPassIcon()">
-                    <i class="gg-lock-unlock active" id="icon-password"></i>
+                    <div class="icon-container" id="password-icon-container">
+                        <i class="gg-lock-unlock focused-icon" id="icon-password-focused"></i>
+                    </div>
+                    <i class="gg-lock-unlock" id="icon-password-notfocused"></i>
                     <input type="password" id="input-password" th:field="*{password}" onblur="resetPasswordIcon()"/>
                 </div>
             </li>
