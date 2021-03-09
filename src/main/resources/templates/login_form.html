@@ -89,8 +89,8 @@
             display: flex;
             justify-content: center;
             overflow: hidden;
-            background: rgb(238,174,202);
-            background: radial-gradient(circle, rgba(238,174,202,1) 59%, rgba(148,187,233,1) 80%);
+            background: rgb(198,183,12);
+            background: linear-gradient(145deg, rgba(198,183,12,0.5942752100840336) 27%, rgba(30,30,238,0.5914740896358543) 77%);
         }
 
         .container {
@@ -230,7 +230,7 @@
                         <i class="gg-user focused-icon" id="icon-email-focused"></i>
                     </div>
                     <i class="gg-user" id="icon-email-notfocused"></i>
-                    <input type="text" id="input-email" th:field="*{email}" onblur="resetEmailIcon()"/>
+                    <input type="text" id="input-email" th:field="*{email}" onblur="resetEmailIcon()" placeholder="e-mail"/>
                 </div>
             </li>
             <li><div class="space"></div></li>
@@ -240,7 +240,7 @@
                         <i class="gg-lock-unlock focused-icon" id="icon-password-focused"></i>
                     </div>
                     <i class="gg-lock-unlock" id="icon-password-notfocused"></i>
-                    <input type="password" id="input-password" th:field="*{password}" onblur="resetPasswordIcon()"/>
+                    <input type="password" id="input-password" th:field="*{password}" onblur="resetPasswordIcon()" placeholder="password"/>
                 </div>
             </li>
             <li><div class="space"></div></li>

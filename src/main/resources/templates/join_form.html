@@ -1,26 +1,274 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Gudea:400,700" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>toucan | Sign up</title>
+    <title>toucan | Sign in</title>
+    <link rel="icon" href="../favicon.ico">
+    <link href='https://css.gg/user.css' rel='stylesheet'>
+    <link href='https://css.gg/lock-unlock.css' rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function focusEmailIn() {
+            ($('#input-email').focus());
+        }
+
+        function focusPassIn() {
+            ($('#input-password').focus());
+        }
+
+        function focusRePassIn() {
+            ($('#input-repassword').focus());
+        }
+
+        function colorEmailIcon() {
+            $('#email-icon-container').css('visibility', 'visible');
+            $('#input-email').css('color', '#fff');
+        }
+
+        function colorPassIcon() {
+            $('#password-icon-container').css('visibility', 'visible');
+            $('#input-password').css('color', '#fff');
+        }
+
+        function colorRePassIcon() {
+            $('#repassword-icon-container').css('visibility', 'visible');
+            $('#reinput-password').css('color', '#fff');
+        }
+
+        function resetEmailIcon() {
+            $('#email-icon-container').css('visibility', 'hidden');
+            $('#input-email').css('color', '#868898');
+        }
+
+        function resetPasswordIcon() {
+            $('#password-icon-container').css('visibility', 'hidden');
+            $('#input-password').css('color', '#868898');
+        }
+
+        function resetRePasswordIcon() {
+            $('#repassword-icon-container').css('visibility', 'hidden');
+            $('#reinput-password').css('color', '#868898');
+        }
+    </script>
+    <style>
+        *, *::before, *::after {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Gudea', sans-serif;
+            color: #ffffff;
+            font-weight: 200;
+
+        }
+
+        i, i::after, i::before {
+            color: #5E6174;
+        }
+
+        i {
+            width: 10px;
+        }
+
+        .gg-user {
+            --ggs: 1.2;
+        }
+
+        h1 {
+            position: relative;
+            top: 145px;
+            left: 40px;
+            font-size: 20px;
+            color: #A1A3B0;-webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            background: rgb(198,183,12);
+            background: linear-gradient(145deg, rgba(198,183,12,0.5942752100840336) 27%, rgba(30,30,238,0.5914740896358543) 77%);
+        }
+
+        .container {
+            position: relative;
+            top: 20%;
+            width: 450px;
+            height: 600px;
+            background: rgb(17,17,18);
+            background: linear-gradient(48deg, rgba(17,17,18,1) 0%, rgba(15,15,15,1) 87%);
+        }
+
+        .input-con {
+            position: relative;
+            top: 180px;
+            width: 100%;
+            height: 50px;
+            background-color: transparent;
+            padding: 7px;
+            display: flex;
+        }
+
+        .space {
+            position: relative;
+            top: 180px;
+            height: 2px;
+            width: 100%;
+            background-color: #1b1b1d;
+        }
+
+        .top-bar {
+            width: 100%;
+            height: 4px;
+            background-color: #FFD900;
+        }
+
+        input,
+        input:hover,
+        input:focus,
+        input:active,
+        input:-webkit-autofill,
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+            all: unset;
+            position: relative;
+            left: 70px;
+            width: calc(100% - 100px);
+            height: 100%;
+            display: inline-block;
+            color: #868898;
+            font-size: 18px;
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+            border: none;
+            -webkit-text-fill-color: #868898;
+            -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+            transition: background-color 5000s ease-in-out 0s;
+            -webkit-text-size-adjust: 200%;
+        }
+
+        input:-webkit-autofill {
+
+            background-color: #fff;
+            border-radius: 7px;
+        }
+
+        .gg-user {
+            position: absolute;
+            top: 15px;
+            left: 35px;
+        }
+
+        .gg-lock-unlock {
+            position: absolute;
+            top: 30px;
+            left: 38px;
+        }
+
+        .icon-container {
+            visibility: hidden;
+            z-index: 2;
+        }
+
+        .focused-icon,
+        .focused-icon::after,
+        .focused-icon::before{
+            color: #fff;
+        }
+
+        .submit-button,
+        .submit-button:hover,
+        .submit-button:active {
+            all: unset;
+            cursor: pointer;
+            position: relative;
+            top: 10%;
+            left: 20%;
+            width: 60%;
+            height: 28px;
+            text-align: center;
+            color: #A1A3B0;
+            font-size: 18px;
+            background-color: transparent;
+            border: solid #A1A3B0 1.9px;
+            border-radius: 50vw;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+        }
+
+        .submit-button:hover,
+        .submit-button:active {
+
+        }
+
+        #button {
+            position: relative;
+            top: 300px;
+        }
+    </style>
+
 </head>
 <body>
-<div align="center">
-    <h1>User Registration</h1>
-    <form action="#" th:action="@{/join}" method="post" th:object="${user}">
-        <label>E-mail:</label>
-        <input type="text" th:field="*{email}" /><br/>
-
-        <label>Password:</label>
-        <input type="password" th:field="*{password}" /><br/>
-
-        <label>Repeat password:</label>
-        <input type="password" th:field="*{rePassword}" /><br/>
-
-        <button type="submit">Register</button>
+<div class="container">
+    <div class="top-bar"></div>
+    <h1>Create a new account</h1>
+    <form action="#" th:action="@{/login}" method="post" th:object="${user}">
+        <ul>
+            <li><div class="space"></div></li>
+            <li>
+                <div class="input-con" id="div-email" onclick="focusEmailIn(); colorEmailIcon()">
+                    <div class="icon-container" id="email-icon-container">
+                        <i class="gg-user focused-icon" id="icon-email-focused"></i>
+                    </div>
+                    <i class="gg-user" id="icon-email-notfocused"></i>
+                    <input type="text" id="input-email" th:field="*{email}" onblur="resetEmailIcon()" placeholder="e-mail"/>
+                </div>
+            </li>
+            <li><div class="space"></div></li>
+            <li>
+                <div class="input-con" id="div-password" onclick="focusPassIn(); colorPassIcon()">
+                    <div class="icon-container" id="password-icon-container">
+                        <i class="gg-lock-unlock focused-icon" id="icon-password-focused"></i>
+                    </div>
+                    <i class="gg-lock-unlock" id="icon-password-notfocused"></i>
+                    <input type="password" id="input-password" th:field="*{password}" onblur="resetPasswordIcon()" placeholder="password"/>
+                </div>
+            </li>
+            <li><div class="space"></div></li>
+            <li>
+                <div class="input-con" id="div-repassword" onclick="focusRePassIn(); colorRePassIcon()">
+                    <div class="icon-container" id="repassword-icon-container">
+                        <i class="gg-lock-unlock focused-icon" id="reicon-password-focused"></i>
+                    </div>
+                    <i class="gg-lock-unlock" id="icon-repassword-notfocused"></i>
+                    <input type="password" id="input-repassword" th:field="*{password}" onblur="resetRePasswordIcon()" placeholder="password"/>
+                </div>
+            </li>
+            <li><div class="space"></div></li>
+        </ul>
+        <button class="submit-button" id="button" type="submit">Create account</button>
     </form>
 </div>
 </body>
