@@ -10,4 +10,8 @@ import java.util.Objects;
 @Controller
 public class ControllerDashboard {
 
+    @GetMapping("/dashboard")
+    public String sendDashboard() {
+        return "dashboard";
+    }
 }

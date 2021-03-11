@@ -46,7 +46,7 @@ public class ControllerEntry {
         }
 
         if (serviceEntry.isTokenCorrect(jwt)) {
-            return "dashboard"; //or "redirect:/" but "dashboard" allow to test easier
+            return "redirect:/dashboard"; //or "redirect:/" but "dashboard" allow to test easier
         }
 
         model.addAttribute("user", new DtoUser());
@@ -70,7 +70,7 @@ public class ControllerEntry {
 
         if (serviceEntry.isTokenCorrect(jwt)) {
             response.setStatus(200);
-            return "dashboard"; //or "redirect:/" but "dashboard" allow to test easier
+            return "redirect:/dashboard"; //or "redirect:/" but "dashboard" allow to test easier
         }
 
         model.addAttribute("user", new DtoUser());
@@ -93,7 +93,7 @@ public class ControllerEntry {
         if (Objects.nonNull(token)) {
             Cookie cookie = new Cookie("jwt", token);
             response.addCookie(cookie);
-            return "dashboard"; //or "redirect:/" but "dashboard" allow to test easier
+            return "redirect:/dashboard"; //or "redirect:/" but "dashboard" allow to test
         }
 
         return null; //always before an error will be thrown in loginUserAndReturnToken()
@@ -114,7 +114,7 @@ public class ControllerEntry {
         if (Objects.nonNull(token)) {
             Cookie cookie = new Cookie("jwt", token);
             response.addCookie(cookie);
-            return "dashboard"; //or "redirect:/" but "dashboard" allow to test easier
+            return "redirect:/dashboard"; //or "redirect:/" but "dashboard" allow to test easier
         }
 
         return null; //always before an error will be thrown in registersUserAndReturnToken()
