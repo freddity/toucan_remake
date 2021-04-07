@@ -1,12 +1,15 @@
 package com.example.toucan_remake.entry;
 
-import com.example.toucan_remake.dto.DtoUser;
+import com.example.toucan_remake.dto.DtoUserLog;
+import com.example.toucan_remake.dto.DtoUserReg;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Objects;
 
 /**
@@ -41,7 +44,8 @@ public class ControllerEntry {
     public String sendLoginPage(@CookieValue(value = "jwt", required = false) String jwt, Model model) {
 
         if (Objects.isNull(jwt)) {
-            model.addAttribute("user", new DtoUser());
+            model.addAttribute("user", new DtoUserLog());
+            model.addAttribute("errorMessage", "");
             return "login_form";
         }
 
@@ -49,7 +53,8 @@ public class ControllerEntry {
             return "redirect:/dashboard"; //or "redirect:/" but "dashboard" allow to test easier
         }
 
-        model.addAttribute("user", new DtoUser());
+        model.addAttribute("user", new DtoUserLog());
+        model.addAttribute("errorMessage", "");
         return "login_form";
     }
 
@@ -63,7 +68,7 @@ public class ControllerEntry {
                                HttpServletResponse response) {
 
         if (Objects.isNull(jwt)) {
-            model.addAttribute("user", new DtoUser());
+            model.addAttribute("user", new DtoUserLog());
             response.setStatus(200);
             return "join_form";
         }
@@ -73,7 +78,7 @@ public class ControllerEntry {
             return "redirect:/dashboard"; //or "redirect:/" but "dashboard" allow to test easier
         }
 
-        model.addAttribute("user", new DtoUser());
+        model.addAttribute("user", new DtoUserLog());
         response.setStatus(200);
         return "join_form";
     }
@@ -85,7 +90,14 @@ public class ControllerEntry {
      * @return calls "/" endpoint
      */
     @PostMapping("/login")
-    public String getLoginData(@ModelAttribute() DtoUser dtoUser, HttpServletResponse response) {
+    public String getLoginData(@ModelAttribute() @Valid DtoUserLog dtoUser, BindingResult bindingResult, HttpServletResponse response, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", new DtoUserLog());
+            model.addAttribute("errorMessage", bindingResult.getAllErrors().toString());
+            return "login_form";
+        }
+
 
         String token = serviceEntry.loginUserAndReturnToken(
                 dtoUser.getEmail(), dtoUser.getPassword());
@@ -106,7 +118,7 @@ public class ControllerEntry {
      * @return calls "/" endpoint
      */
     @PostMapping("/join")
-    public String getJoinData(@ModelAttribute() DtoUser dtoUser, HttpServletResponse response) {
+    public String getJoinData(@ModelAttribute() @Valid DtoUserReg dtoUser, HttpServletResponse response) {
 
         String token = serviceEntry.registersUserAndReturnToken(
                 dtoUser.getEmail(), dtoUser.getPassword());

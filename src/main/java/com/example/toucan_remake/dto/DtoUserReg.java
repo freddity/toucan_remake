@@ -1,9 +1,16 @@
 package com.example.toucan_remake.dto;
 
-public class DtoUser {
+import javax.validation.constraints.NotBlank;
 
+public class DtoUserReg {
+
+    @NotBlank(message = "email cannot be empty")
     private String email;
+
+    @NotBlank(message = "password cannot be empty")
     private String password;
+
+    @NotBlank(message = "you have to repeat password")
     private String rePassword;
 
     public String getEmail() {
@@ -17,6 +24,7 @@ public class DtoUser {
     public String getRePassword() {
         return rePassword;
     }
+
 
     public void setEmail(String email) {
         this.email = email;
