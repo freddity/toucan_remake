@@ -214,6 +214,13 @@
             position: relative;
             top: 300px;
         }
+
+        .validation-error-messages {
+            position: relative;
+            top: 200px;
+            left: 20px;
+            color: red;
+        }
     </style>
 
 </head>
@@ -221,7 +228,6 @@
 <div class="container">
     <div class="top-bar"></div>
     <h1>Login to your account</h1>
-    <span th:text="${errorMessage}">huk</span>
     <form action="#" th:action="@{/login}" method="post" th:object="${user}" onsubmit="">
         <ul>
             <li><div class="space"></div></li>
@@ -245,6 +251,9 @@
                 </div>
             </li>
             <li><div class="space"></div></li>
+            <li>
+                <span class="validation-error-messages" th:text="${errorMessage}"></span>
+            </li>
         </ul>
         <button class="submit-button" id="button" type="submit">Log In</button>
     </form>

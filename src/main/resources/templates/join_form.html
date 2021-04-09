@@ -227,6 +227,13 @@
             position: relative;
             top: 300px;
         }
+
+        .validation-error-messages {
+            position: absolute;
+            top: 400px;
+            left: 20px;
+            color: red;
+        }
     </style>
 
 </head>
@@ -267,6 +274,9 @@
                 </div>
             </li>
             <li><div class="space"></div></li>
+            <li>
+                <span class="validation-error-messages" th:text="${errorMessage}"></span>
+            </li>
         </ul>
         <button class="submit-button" id="button" type="submit">Create account</button>
     </form>

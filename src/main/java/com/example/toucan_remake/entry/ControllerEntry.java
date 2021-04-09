@@ -5,11 +5,14 @@ import com.example.toucan_remake.dto.DtoUserReg;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -68,7 +71,7 @@ public class ControllerEntry {
                                HttpServletResponse response) {
 
         if (Objects.isNull(jwt)) {
-            model.addAttribute("user", new DtoUserLog());
+            model.addAttribute("user", new DtoUserReg());
             response.setStatus(200);
             return "join_form";
         }
@@ -78,7 +81,7 @@ public class ControllerEntry {
             return "redirect:/dashboard"; //or "redirect:/" but "dashboard" allow to test easier
         }
 
-        model.addAttribute("user", new DtoUserLog());
+        model.addAttribute("user", new DtoUserReg());
         response.setStatus(200);
         return "join_form";
     }
@@ -90,11 +93,24 @@ public class ControllerEntry {
      * @return calls "/" endpoint
      */
     @PostMapping("/login")
-    public String getLoginData(@ModelAttribute() @Valid DtoUserLog dtoUser, BindingResult bindingResult, HttpServletResponse response, Model model) {
+    public String getLoginData(@ModelAttribute("data") @Valid DtoUserLog dtoUser, BindingResult bindingResult, HttpServletResponse response, Model model) {
 
         if (bindingResult.hasErrors()) {
+
             model.addAttribute("user", new DtoUserLog());
-            model.addAttribute("errorMessage", bindingResult.getAllErrors().toString());
+
+            List<String> errors = new ArrayList<>();
+
+            for (Object object : bindingResult.getAllErrors()) {
+                if(object instanceof FieldError) {
+                    FieldError fieldError = (FieldError) object;
+
+                    errors.add(fieldError.getDefaultMessage());
+                }
+            }
+
+            model.addAttribute("errorMessage", errors.toString());
+
             return "login_form";
         }
 
@@ -111,6 +127,12 @@ public class ControllerEntry {
         return null; //always before an error will be thrown in loginUserAndReturnToken()
     }
 
+
+    /*Muszę ogarnąć ja zrobić aby ustawić priorytet dla
+    konkretnych błędów żeby nie pojawiał się wielki behemot
+    na 5 linijek*/
+
+
     /**
      * Creates user and returns JWT.
      * @param dtoUser submitted credentials
@@ -118,7 +140,26 @@ public class ControllerEntry {
      * @return calls "/" endpoint
      */
     @PostMapping("/join")
-    public String getJoinData(@ModelAttribute() @Valid DtoUserReg dtoUser, HttpServletResponse response) {
+    public String getJoinData(@ModelAttribute("data") @Valid DtoUserReg dtoUser, BindingResult bindingResult, HttpServletResponse response, Model model) {
+
+        if (bindingResult.hasErrors()) {
+
+            model.addAttribute("user", new DtoUserReg());
+
+            List<String> errors = new ArrayList<>();
+
+            for (Object object : bindingResult.getAllErrors()) {
+                if(object instanceof FieldError) {
+                    FieldError fieldError = (FieldError) object;
+
+                    errors.add(fieldError.getDefaultMessage());
+                }
+            }
+
+            model.addAttribute("errorMessage", errors.toString());
+
+            return "join_form";
+        }
 
         String token = serviceEntry.registersUserAndReturnToken(
                 dtoUser.getEmail(), dtoUser.getPassword());
