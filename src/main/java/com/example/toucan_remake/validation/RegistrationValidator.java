@@ -8,13 +8,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String> {
+/**
+ * Registration password validation rules.
+ * @author Jakub Iwanicki
+ */
+public class RegistrationValidator implements ConstraintValidator<ValidPassword, String> {
 
-    @Override
+    /*@Override
     public void initialize(ValidPassword constraintAnnotation) {
 
-    }
+    }*/
 
+    /**
+     * Method checks password correctness
+     * @param password string to validate
+     * @param context validation context
+     * @return true or false depends on correctness of received string (password)
+     */
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
         PasswordValidator validator = new PasswordValidator(Arrays.asList(

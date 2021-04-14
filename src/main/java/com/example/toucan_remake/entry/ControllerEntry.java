@@ -127,12 +127,6 @@ public class ControllerEntry {
         return null; //always before an error will be thrown in loginUserAndReturnToken()
     }
 
-
-    /*Muszę ogarnąć ja zrobić aby ustawić priorytet dla
-    konkretnych błędów żeby nie pojawiał się wielki behemot
-    na 5 linijek*/
-
-
     /**
      * Creates user and returns JWT.
      * @param dtoUser submitted credentials

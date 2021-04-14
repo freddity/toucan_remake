@@ -16,7 +16,7 @@ public class DtoUserReg {
     //already written in PasswordConstraintValidator
     /*@Size(min = 8, max = 40, message
             = "password be between 8 and 40 characters")*/
-    //@ValidPassword
+    @ValidPassword
     private String password;
 
     @NotBlank(message = "repeat password is required")

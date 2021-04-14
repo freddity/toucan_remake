@@ -4,8 +4,13 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
+/**
+ * Annotation for validate password while creating account.
+ * Usages: Spring Boot Validation, Passay
+ * @author Jakub Iwanicki
+ */
 @Documented
-@Constraint(validatedBy = PasswordConstraintValidator.class)
+@Constraint(validatedBy = RegistrationValidator.class)
 @Target({ ElementType.FIELD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidPassword {
