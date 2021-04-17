@@ -14,7 +14,11 @@
     <link href='https://css.gg/user.css' rel='stylesheet'>
     <link href='https://css.gg/lock-unlock.css' rel='stylesheet'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script>
+        setTimeout(() => {  location.reload(); }, 1000);
+
+
         function focusEmailIn() {
             ($('#input-email').focus());
         }
@@ -234,6 +238,19 @@
             left: 20px;
             color: red;
         }
+
+        .error-indicator {
+            position: relative;
+            left: 50px;
+            width: 32px;
+            height: 32px;
+            align-self: center;
+            fill: red;
+        }
+
+        .filter-red{
+            filter: invert(48%) sepia(13%) saturate(3207%) hue-rotate(313deg) brightness(100%) contrast(100%);
+        }
     </style>
 
 </head>
@@ -251,6 +268,7 @@
                     </div>
                     <i class="gg-user" id="icon-email-notfocused"></i>
                     <input type="text" id="input-email" th:field="*{email}" onblur="resetEmailIcon()" placeholder="e-mail"/>
+                    <img id="email-error" src="../icons/error-icon.svg" class="error-indicator filter-red" alt="err">
                 </div>
             </li>
             <li><div class="space"></div></li>
@@ -260,7 +278,9 @@
                         <i class="gg-lock-unlock focused-icon" id="icon-password-focused"></i>
                     </div>
                     <i class="gg-lock-unlock" id="icon-password-notfocused"></i>
-                    <input type="password" id="input-password" th:field="*{rePassword}" onblur="resetPasswordIcon()" placeholder="password"/>
+                    <input type="password" id="input-password" th:field="*{password}" onblur="resetPasswordIcon()" placeholder="password"/>
+                    <img id="password-error" src="../icons/error-icon.svg" class="error-indicator filter-red" alt="err">
+
                 </div>
             </li>
             <li><div class="space"></div></li>
@@ -270,7 +290,8 @@
                         <i class="gg-lock-unlock focused-icon" id="reicon-password-focused"></i>
                     </div>
                     <i class="gg-lock-unlock" id="icon-repassword-notfocused"></i>
-                    <input type="password" id="input-repassword" th:field="*{password}" onblur="resetRePasswordIcon()" placeholder="password"/>
+                    <input type="password" id="input-repassword" th:field="*{rePassword}" onblur="resetRePasswordIcon()" placeholder="re-password"/>
+                    <img id="repassword-error" src="../icons/error-icon.svg" class="error-indicator filter-red" alt="err">
                 </div>
             </li>
             <li><div class="space"></div></li>
